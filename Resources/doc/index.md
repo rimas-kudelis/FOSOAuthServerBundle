@@ -3,7 +3,10 @@ Getting Started With FOSOAuthServerBundle
 
 ## Prerequisites
 
-This version of the bundle requires Symfony 7
+This version of the bundle requires :
+- Symfony 7 on branch 5.0 or 5.1
+- Symfony 6 on branch 4.0
+- Symfony 5 on branch 3.0
 
 #### Translations
 
@@ -32,13 +35,19 @@ Installation is a quick 5 steps process:
 ### Step 1: Install FOSOAuthServerBundle
 
 The preferred way to install this bundle is to rely on [Composer](http://getcomposer.org).
-Just check on [Packagist](http://packagist.org/packages/klapaudius/oauth-server-bundle) the version you want to install (in the following example, we used "dev-master") and add it to your `composer.json`:
+Add it to your project with the command :
+
+```
+composer require klapaudius/oauth-server-bundle
+```
+
+This will add in your `composer.json` file
 
 ``` js
 {
     "require": {
         // ...
-        "klapaudius/oauth-server-bundle": "dev-master"
+        "klapaudius/oauth-server-bundle": "*"
     }
 }
 ```
