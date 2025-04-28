@@ -21,6 +21,7 @@
             <directory>./Tests</directory>
             <directory>./Tests-old</directory>
             <directory>./vendor</directory>
+            <file>.php_cs-fixer.php</file>
         </exclude>
     </source>
     <testsuites>
