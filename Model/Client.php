@@ -131,6 +131,9 @@ class Client implements ClientInterface
 
     public function getPassword(): string
     {
+        if (null === $this->secret) {
+            throw new \LogicException('The client has no secret.');
+        }
         return $this->getSecret();
     }
 
