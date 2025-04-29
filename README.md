@@ -2,6 +2,7 @@ FOSOAuthServerBundle
 ====================
 [![Tests](https://github.com/klapaudius/FOSOAuthServerBundle/actions/workflows/php.yml/badge.svg?branch=5.1)](https://github.com/klapaudius/FOSOAuthServerBundle/actions/workflows/php.yml)
 [![codecov](https://codecov.io/gh/klapaudius/FOSOAuthServerBundle/graph/badge.svg?token=UK39PJLNTB)](https://codecov.io/gh/klapaudius/FOSOAuthServerBundle)
+![Packagist Downloads](https://img.shields.io/packagist/dt/klapaudius/oauth-server-bundle)
 
 ## Documentation
  
