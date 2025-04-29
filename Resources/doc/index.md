@@ -35,19 +35,13 @@ Installation is a quick 5 steps process:
 ### Step 1: Install FOSOAuthServerBundle
 
 The preferred way to install this bundle is to rely on [Composer](http://getcomposer.org).
-Add it to your project with the command :
-
-```
-composer require klapaudius/oauth-server-bundle
-```
-
-This will add in your `composer.json` file
+Just check on [Packagist](http://packagist.org/packages/klapaudius/oauth-server-bundle) the version you want to install (in the following example, we used "5.1" for Symfony 7) and add it to your `composer.json`:
 
 ``` js
 {
     "require": {
         // ...
-        "klapaudius/oauth-server-bundle": "*"
+        "klapaudius/oauth-server-bundle": "^5.1"
     }
 }
 ```
