@@ -45,6 +45,7 @@ Just check on [Packagist](http://packagist.org/packages/klapaudius/oauth-server-
     }
 }
 ```
+###### N.B. : if you are not sure which version you need, you can just replace "^5.1" by "*" and change at the end of the installation procedure to be more specific using the automatically installed version (e.g. "^4.0" if it was 4.0.6). 
 
 ### Step 2: Create model classes
 
@@ -56,8 +57,8 @@ This bundle needs to persist some classes to a database:
 - `AuthCode`
 
 Your first job, then, is to create these classes for your application.
-These classes can look and act however you want: add any
-properties or methods you find useful.
+These classes can look and act however, feel free to add any
+properties or methods that suit your needs.
 
 These classes have just a few requirements:
 
@@ -93,16 +94,12 @@ namespace App\Entity;
 use FOS\OAuthServerBundle\Entity\Client as BaseClient;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class Client extends BaseClient
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy="AUTO")]
+    #[ORM\Column(type: 'integer')]
     protected $id;
 
     public function __construct()
@@ -177,7 +174,7 @@ class ClientManager implements ClientManagerInterface
 
 ``` php
 <?php
-// src/App/Entity/AccessToken.php
+// src/Entity/AccessToken.php
 
 namespace App\Entity;
 
@@ -186,35 +183,27 @@ use Doctrine\ORM\Mapping as ORM;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class AccessToken extends BaseAccessToken
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    #[ORM\Column(type: 'integer')]
     protected $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Client")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: "Client")]
+    #[ORM\JoinColumn(nullable: false)]
     protected ClientInterface $client;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Your\Own\Entity\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ORM\ManyToOne(targetEntity: 'Your\Own\Entity\User')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: "CASCADE")]
     protected ?UserInterface $user = null;
 }
 ```
 
 ``` php
 <?php
-// src/App/Entity/RefreshToken.php
+// src/Entity/RefreshToken.php
 
 namespace App\Entity;
 
@@ -223,35 +212,27 @@ use Doctrine\ORM\Mapping as ORM;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class RefreshToken extends BaseRefreshToken
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    #[ORM\Column(type: 'integer')]
     protected $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Client")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: "Client")]
+    #[ORM\JoinColumn(nullable: false)]
     protected ClientInterface $client;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Your\Own\Entity\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ORM\ManyToOne(targetEntity: 'Your\Own\Entity\User')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: "CASCADE")]
     protected ?UserInterface $user = null;
 }
 ```
 
 ``` php
 <?php
-// src/App/Entity/AuthCode.php
+// src/Entity/AuthCode.php
 
 namespace App\Entity;
 
@@ -260,28 +241,20 @@ use Doctrine\ORM\Mapping as ORM;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class AuthCode extends BaseAuthCode
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    #[ORM\Column(type: 'integer')]
     protected $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Client")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: "Client")]
+    #[ORM\JoinColumn(nullable: false)]
     protected ClientInterface $client;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Your\Own\Entity\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ORM\ManyToOne(targetEntity: 'Your\Own\Entity\User')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: "CASCADE")]
     protected ?UserInterface $user = null;
 }
 ```
@@ -293,7 +266,7 @@ __Note__: If you don't have `auto_mapping` activated in your doctrine configurat
 ``` php
 <?php
 
-// src/App/Document/Client.php
+// src/Document/Client.php
 
 namespace App\Document;
 
@@ -306,7 +279,7 @@ class Client extends BaseClient
 ```
 
 ``` xml
-<!-- src/App/Resources/config/doctrine/Client.mongodb.xml -->
+<!-- src/Resources/config/doctrine/Client.mongodb.xml -->
 
 <doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -323,7 +296,7 @@ class Client extends BaseClient
 ``` php
 <?php
 
-// src/App/Document/AuthCode.php
+// src/Document/AuthCode.php
 
 namespace App\Document;
 
@@ -360,7 +333,7 @@ class AuthCode extends BaseAuthCode
 ```
 
 ``` xml
-<!-- src/App/Resources/config/doctrine/AuthCode.mongodb.xml -->
+<!-- src/Resources/config/doctrine/AuthCode.mongodb.xml -->
 
 <doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -378,7 +351,7 @@ class AuthCode extends BaseAuthCode
 ``` php
 <?php
 
-// src/App/Document/AccessToken.php
+// src/Document/AccessToken.php
 
 namespace App\Document;
 
@@ -415,7 +388,7 @@ class AccessToken extends BaseAccessToken
 ```
 
 ``` xml
-<!-- src/App/Resources/config/doctrine/AccessToken.mongodb.xml -->
+<!-- src/Resources/config/doctrine/AccessToken.mongodb.xml -->
 
 <doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -433,7 +406,7 @@ class AccessToken extends BaseAccessToken
 ``` php
 <?php
 
-// src/App/Document/RefreshToken.php
+// src/Document/RefreshToken.php
 
 namespace App\Document;
 
@@ -470,7 +443,7 @@ class RefreshToken extends BaseRefreshToken
 ```
 
 ``` xml
-<!-- src/App/Resources/config/doctrine/RefreshToken.mongodb.xml -->
+<!-- src/Resources/config/doctrine/RefreshToken.mongodb.xml -->
 
 <doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -545,8 +518,8 @@ security:
     # also note absence of "access_control" section
 ```
 
-From now on all of your api resources can be accessed without authorization. But what if one or more of them should be
-secured anyway or/and require presence of authenticated user? It's easy! You can do that manually by adding few lines of
+From now on, all of your api resources can be accessed without authorization. But what if one or more of them should be
+secured anyway or/and require the presence of an authenticated user? You can do that manually by adding a few lines of
 code at the beginning of all of your secured actions like in the example below:
 
 ``` php
