@@ -41,20 +41,17 @@ class ClientManagerTest extends TestCase
 
         $this->documentManager = $this->getMockBuilder(DocumentManager::class)
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
         $this->repository = $this->getMockBuilder(DocumentRepository::class)
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
-        $this->className = 'RandomClassName'.\random_bytes(5);
+            ->getMock();
+        $this->className = 'RandomClassName' . \random_bytes(5);
 
         $this->documentManager
             ->expects($this->once())
             ->method('getRepository')
             ->with($this->className)
-            ->willReturn($this->repository)
-        ;
+            ->willReturn($this->repository);
 
         $this->instance = new ClientManager($this->documentManager, $this->className);
 
@@ -77,8 +74,7 @@ class ClientManagerTest extends TestCase
             ->expects($this->once())
             ->method('findOneBy')
             ->with($criteria)
-            ->willReturn($randomResult)
-        ;
+            ->willReturn($randomResult);
 
         $this->assertSame($randomResult, $this->instance->findClientBy($criteria));
     }
@@ -87,20 +83,17 @@ class ClientManagerTest extends TestCase
     {
         $client = $this->getMockBuilder(ClientInterface::class)
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
 
         $this->documentManager
             ->expects($this->once())
             ->method('persist')
-            ->with($client)
-        ;
+            ->with($client);
 
         $this->documentManager
             ->expects($this->once())
             ->method('flush')
-            ->with()
-        ;
+            ->with();
 
         $this->instance->updateClient($client);
     }
@@ -109,21 +102,52 @@ class ClientManagerTest extends TestCase
     {
         $client = $this->getMockBuilder(ClientInterface::class)
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
 
         $this->documentManager
             ->expects($this->once())
             ->method('remove')
-            ->with($client)
-        ;
+            ->with($client);
 
         $this->documentManager
             ->expects($this->once())
             ->method('flush')
-            ->with()
-        ;
+            ->with();
 
         $this->instance->deleteClient($client);
+    }
+
+    public function testCreateClient()
+    {
+        $dm = $this->getMockBuilder(DocumentManager::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $clientManager = new ClientManager($dm, Client::class);;
+
+        $this->assertInstanceOf(Client::class, $clientManager->createClient());
+    }
+
+    public function testFindClientByPublicIdWithValidPublicId ()
+    {
+        $this->repository
+            ->expects($this->once())
+            ->method('findOneBy')
+            ->with(['id' => 'phpunit', 'randomId' => 'random'])
+            ->willReturn($expected = new Client());
+
+        $actual = $this->instance->findClientByPublicId('phpunit_random');
+
+        $this->assertSame($expected, $actual);
+    }
+
+    public function testFindClientByPublicIdWithInvalidPublicId ()
+    {
+        $this->repository
+            ->expects($this->never())
+            ->method('findOneBy');
+
+        $actual = $this->instance->findClientByPublicId('phpunit');
+
+        $this->assertNull($actual);
     }
 }
