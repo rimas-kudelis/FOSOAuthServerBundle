@@ -23,59 +23,30 @@ class OAuthEvent extends Event
 
     public const POST_AUTHORIZATION_PROCESS = 'fos_oauth_server.post_authorization_process';
 
-    /**
-     * @var UserInterface
-     */
-    private $user;
-
-    /**
-     * @var ClientInterface
-     */
-    private $client;
-
-    /**
-     * @var bool
-     */
-    private $isAuthorizedClient;
-
-    /**
-     * OAuthEvent constructor.
-     */
-    public function __construct(UserInterface $user, ClientInterface $client, bool $isAuthorizedClient = false)
+    public function __construct(
+        private UserInterface $user,
+        private ClientInterface $client,
+        private bool $isAuthorizedClient = false)
     {
-        $this->user = $user;
-        $this->client = $client;
-        $this->isAuthorizedClient = $isAuthorizedClient;
     }
 
-    /**
-     * @return UserInterface
-     */
-    public function getUser()
+    public function getUser(): UserInterface
     {
         return $this->user;
     }
 
-    /**
-     * @param bool $isAuthorizedClient
-     */
-    public function setAuthorizedClient($isAuthorizedClient)
+
+    public function setAuthorizedClient(bool $isAuthorizedClient): void
     {
         $this->isAuthorizedClient = $isAuthorizedClient;
     }
 
-    /**
-     * @return bool
-     */
-    public function isAuthorizedClient()
+    public function isAuthorizedClient(): bool
     {
         return $this->isAuthorizedClient;
     }
 
-    /**
-     * @return ClientInterface
-     */
-    public function getClient()
+    public function getClient(): ClientInterface
     {
         return $this->client;
     }
