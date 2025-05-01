@@ -208,4 +208,27 @@ class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
 
         $this->assertSame($data['n'], $this->instance->deleteExpired());
     }
+
+    public function testCreateClient()
+    {
+        $dm = $this->getMockBuilder(DocumentManager::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $clientManager = new AuthCodeManager($dm, AuthCode::class);;
+
+        $this->assertInstanceOf(AuthCode::class, $clientManager->createAuthCode());
+    }
+
+    public function testFindAuthCodeByToken ()
+    {
+        $this->repository
+            ->expects($this->once())
+            ->method('findOneBy')
+            ->with(['token' => 'phpunit'])
+            ->willReturn($expected = new AuthCode());
+
+        $actual = $this->instance->findAuthCodeByToken('phpunit');
+
+        $this->assertSame($expected, $actual);
+    }
 }
