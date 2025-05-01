@@ -23,6 +23,7 @@ use OAuth2\OAuth2RedirectException;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use ReflectionMethod;
 use ReflectionProperty;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
@@ -168,9 +169,14 @@ class AuthorizeControllerTest extends TestCase
             ->with('_fos_oauth_server.ensure_logout')
             ->willReturn(false);
 
-        $propertyReflection = new ReflectionProperty(AuthorizeController::class, 'client');
-        $propertyReflection->setAccessible(true);
-        $propertyReflection->setValue($this->instance, $this->client);
+        $this->requestStack
+            ->expects($this->once())
+            ->method('getCurrentRequest')
+            ->willReturn($this->request);
+
+        $this->clientManager->expects($this->once())
+            ->method('findClientByPublicId')
+            ->willReturn($this->client);
 
         $this->eventDispatcher
             ->expects($this->exactly(1))
@@ -476,5 +482,21 @@ class AuthorizeControllerTest extends TestCase
             ->willReturn($randomScope);
 
         return $formFields;
+    }
+
+    public function testGetCurrentRequestWithNoRequestWillThrowException(): void
+    {
+        $reflectionMethod = new ReflectionMethod(AuthorizeController::class, 'getCurrentRequest');
+        $reflectionMethod->setAccessible(true);
+
+        $this->requestStack
+            ->expects($this->once())
+            ->method('getCurrentRequest')
+            ->willReturn(null);
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('No current request.');
+
+        $reflectionMethod->invoke($this->instance);
     }
 }
