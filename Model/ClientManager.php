@@ -30,7 +30,7 @@ abstract class ClientManager implements ClientManagerInterface
      */
     public function findClientByPublicId($publicId): ?ClientInterface
     {
-        if (false === $pos = mb_strpos($publicId, '_')) {
+        if (false === $pos = mb_strpos($publicId ?? '', '_')) {
             return null;
         }
 
