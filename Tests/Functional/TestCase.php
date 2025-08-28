@@ -22,7 +22,7 @@ abstract class TestCase extends WebTestCase
     /**
      * @var KernelInterface|null
      */
-    protected static ?KernelInterface $kernel;
+    protected static ?KernelInterface $kernel = null;
 
     protected function setUp(): void
     {
