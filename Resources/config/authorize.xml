@@ -23,6 +23,9 @@
             <argument type="service" id="request_stack" />
         </service>
 
+        <service id="FOS\OAuthServerBundle\Form\Handler\AuthorizeFormHandler"
+                 alias="fos_oauth_server.authorize.form.handler.default" public="true" />
+
         <service id="fos_oauth_server.controller.authorize" class="FOS\OAuthServerBundle\Controller\AuthorizeController" public="true">
             <argument type="service" id="request_stack" />
             <argument type="service" id="fos_oauth_server.authorize.form" />
@@ -31,6 +34,7 @@
             <argument type="service" id="router" />
             <argument type="service" id="fos_oauth_server.client_manager" />
             <argument type="service" id="event_dispatcher" />
+            <tag name="controller.service_arguments" />
         </service>
 
         <service id="fos_oauth_server.security.authenticator.manager" class="FOS\OAuthServerBundle\Security\Authenticator\Oauth2Authenticator">
