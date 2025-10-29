@@ -565,7 +565,7 @@ class YourApiController extends Controller
 
 ### Step 4: Configure FOSOAuthServerBundle
 
-Add references to the token.xml and the tuthorize.xml configuration files in config/routes/oauth2.yml:
+Add references to the token.xml and the authorize.xml configuration files in config/routes/oauth2.yml:
 
 ``` yaml
 # config/routes/oauth2.yml
