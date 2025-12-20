@@ -47,7 +47,7 @@ class AuthorizeFormType extends AbstractType
     /**
      * @return string
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'fos_oauth_server_authorize';
     }
@@ -55,7 +55,7 @@ class AuthorizeFormType extends AbstractType
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->getBlockPrefix();
     }

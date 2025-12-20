@@ -16,6 +16,7 @@ namespace FOS\OAuthServerBundle\Tests\Form\Type;
 use FOS\OAuthServerBundle\Form\Model\Authorize;
 use FOS\OAuthServerBundle\Form\Type\AuthorizeFormType;
 use FOS\OAuthServerBundle\Util\LegacyFormHelper;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\Form\Test\TypeTestCase;
@@ -70,7 +71,7 @@ class AuthorizeFormTypeTest extends TypeTestCase
 
     public function testConfigureOptionsWillSetDefaultsOnTheOptionsResolver(): void
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|OptionsResolver $resolver */
+        /** @var OptionsResolver|MockObject $resolver */
         $resolver = $this->getMockBuilder(OptionsResolver::class)
             ->disableOriginalConstructor()
             ->getMock()
@@ -85,7 +86,7 @@ class AuthorizeFormTypeTest extends TypeTestCase
             ->willReturn($resolver)
         ;
 
-        $this->assertNull($this->instance->configureOptions($resolver));
+        $this->instance->configureOptions($resolver);
     }
 
     public function testGetName(): void
@@ -98,7 +99,7 @@ class AuthorizeFormTypeTest extends TypeTestCase
         $this->assertSame('fos_oauth_server_authorize', $this->instance->getBlockPrefix());
     }
 
-    protected function getTypes()
+    protected function getTypes(): array
     {
         return [
             new AuthorizeFormType(),
