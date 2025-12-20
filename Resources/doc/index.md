@@ -541,21 +541,33 @@ class YourApiController extends Controller
 
 ### Step 4: Configure FOSOAuthServerBundle
 
-Add references to the token.xml and the tuthorize.xml configuration files in config/routes/oauth2.yml:
+Add references to the token.yaml and the authorize.yaml configuration files in config/routes/oauth2.yaml:
 
 ``` yaml
-# config/routes/oauth2.yml
+# config/routes/oauth2.yaml
 fos_oauth_server_token:
-    resource: "@FOSOAuthServerBundle/Resources/config/routing/token.xml"
+    resource: "@FOSOAuthServerBundle/Resources/config/routing/token.yaml"
 
 fos_oauth_server_authorize:
-    resource: "@FOSOAuthServerBundle/Resources/config/routing/authorize.xml"
+    resource: "@FOSOAuthServerBundle/Resources/config/routing/authorize.yaml"
 ```
 
-Add FOSOAuthServerBundle settings in config/packages/fos_auth_server.yml:
+**Note:** XML routing files are deprecated as of version 5.1. While they continue to work for backwards compatibility, you should migrate to YAML:
+
+```yaml
+# Old (deprecated, will trigger warnings):
+resource: "@FOSOAuthServerBundle/Resources/config/routing/token.xml"
+
+# New (recommended):
+resource: "@FOSOAuthServerBundle/Resources/config/routing/token.yaml"
+```
+
+The XML and YAML files define identical routes. Simply change `.xml` to `.yaml` in your routing imports.
+
+Add FOSOAuthServerBundle settings in config/packages/fos_auth_server.yaml:
 
 ``` yaml
-# config/packages/fos_auth_server.yml
+# config/packages/fos_auth_server.yaml
 fos_oauth_server:
     db_driver: orm       # Drivers available: orm or mongodb
     client_class:        App\Entity\Client
@@ -574,7 +586,7 @@ If you're authenticating users, don't forget to set the user provider.
 Here's an example using the FOSUserBundle user provider:
 
 ``` yaml
-# config/packages/fos_auth_server.yml
+# config/packages/fos_auth_server.yaml
 fos_oauth_server:
     ...
 
@@ -662,9 +674,9 @@ return $this->redirect($this->generateUrl('fos_oauth_server_authorize', array(
 
 ## Usage
 
-The `token` endpoint is at `/oauth/v2/token` by default (see `Resources/config/routing/token.xml`).
+The `token` endpoint is at `/oauth/v2/token` by default (see `Resources/config/routing/token.yaml`).
 
-The `authorize` endpoint is at `/oauth/v2/auth` by default (see `Resources/config/routing/authorize.xml`).
+The `authorize` endpoint is at `/oauth/v2/auth` by default (see `Resources/config/routing/authorize.yaml`).
 
 
 ## Next steps
