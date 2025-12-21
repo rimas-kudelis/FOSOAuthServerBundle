@@ -242,7 +242,6 @@ class AuthorizeControllerTest extends TestCase
             ->willReturn(false);
 
         $propertyReflection = new ReflectionProperty(AuthorizeController::class, 'client');
-        $propertyReflection->setAccessible(true);
         $propertyReflection->setValue($this->instance, $this->client);
 
         $this->eventDispatcher
@@ -336,7 +335,6 @@ class AuthorizeControllerTest extends TestCase
             ->with('_fos_oauth_server.ensure_logout', true);
 
         $propertyReflection = new ReflectionProperty(AuthorizeController::class, 'client');
-        $propertyReflection->setAccessible(true);
         $propertyReflection->setValue($this->instance, $this->client);
 
         $this->eventDispatcher
@@ -433,7 +431,6 @@ class AuthorizeControllerTest extends TestCase
             ->willReturn(true);
 
         $propertyReflection = new ReflectionProperty(AuthorizeController::class, 'client');
-        $propertyReflection->setAccessible(true);
         $propertyReflection->setValue($this->instance, $this->client);
 
         $invocations = [
@@ -487,7 +484,6 @@ class AuthorizeControllerTest extends TestCase
     public function testGetCurrentRequestWithNoRequestWillThrowException(): void
     {
         $reflectionMethod = new ReflectionMethod(AuthorizeController::class, 'getCurrentRequest');
-        $reflectionMethod->setAccessible(true);
 
         $this->requestStack
             ->expects($this->once())
