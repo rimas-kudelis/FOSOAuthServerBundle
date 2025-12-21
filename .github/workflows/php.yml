@@ -15,18 +15,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
+
+    - name: Setup PHP with extensions
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.3'
+        extensions: mongodb-1.21.0, xdebug
+        coverage: xdebug
+        ini-values: memory_limit=-1
+        tools: composer:v2
 
     - name: Validate composer.json and composer.lock
       run: composer validate --strict
 
     - name: Cache Composer packages
       id: composer-cache
-      uses: actions/cache@v3
+      uses: actions/cache@v5
       with:
         path: vendor
-        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+        key: ${{ runner.os }}-php-8.3-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
+          ${{ runner.os }}-php-8.3-
           ${{ runner.os }}-php-
 
     - name: Install dependencies
@@ -36,10 +46,22 @@ jobs:
     # Docs: https://getcomposer.org/doc/articles/scripts.md
 
     - name: Run test suite
-      uses: php-actions/phpunit@v3
+      uses: php-actions/phpunit@v4
       env:
         XDEBUG_MODE: coverage
       with:
-        php_extensions: "xdebug"
-        coverage_clover: "coverage/clover.xml"
-#      run: composer run-script test
+        php_version: '8.3'
+        php_extensions: xdebug
+        coverage_clover: "coverage.xml"
+        args: --log-junit junit.xml
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v5
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_ORG_TOKEN }}
+
+    - name: Upload test results to Codecov
+      if: ${{ !cancelled() }}
+      uses: codecov/test-results-action@v1
+      with:
+        token: ${{ secrets.CODECOV_ORG_TOKEN }}

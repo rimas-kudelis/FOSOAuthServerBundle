@@ -18,27 +18,19 @@ use FOS\OAuthServerBundle\Entity\AuthCode as BaseAuthCode;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="auth_codes")
- */
+#[ORM\Entity]
+#[ORM\Table(name: 'auth_codes')]
 class AuthCode extends BaseAuthCode
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Client")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: Client::class)]
+    #[ORM\JoinColumn(nullable: false)]
     protected ClientInterface $client;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="User")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class)]
     protected ?UserInterface $user;
 }

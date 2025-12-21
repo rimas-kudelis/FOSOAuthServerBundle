@@ -16,25 +16,15 @@ namespace FOS\OAuthServerBundle\Tests\Functional\TestBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class User implements UserInterface
 {
-    /**
-     * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected int $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string")
-     */
+    #[ORM\Column(type: 'string')]
     protected string $password;
 
     public function getId(): int

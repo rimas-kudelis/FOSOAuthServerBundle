@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\Tests\Entity;
 
-use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use FOS\OAuthServerBundle\Entity\AccessToken;
 use FOS\OAuthServerBundle\Entity\TokenManager;
@@ -114,14 +114,12 @@ class TokenManagerTest extends TestCase
             ->expects($this->once())
             ->method('persist')
             ->with($token)
-            ->willReturn(null)
         ;
 
         $this->entityManager
             ->expects($this->once())
             ->method('flush')
             ->with()
-            ->willReturn(null)
         ;
 
         $this->instance->updateToken($token);
@@ -186,7 +184,7 @@ class TokenManagerTest extends TestCase
             ->willReturn($queryBuilder)
         ;
 
-        $query = $this->getMockBuilder(AbstractQuery::class)
+        $query = $this->getMockBuilder(Query::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;

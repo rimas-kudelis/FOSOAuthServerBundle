@@ -8,3 +8,4 @@ composer.lock
 .phpunit.result.cache
 .DS_Store
 /phpunit.coverage.xml
+/CLAUDE.md

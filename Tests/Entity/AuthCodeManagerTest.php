@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\Tests\Entity;
 
-use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\Persistence\ObjectRepository;
 use FOS\OAuthServerBundle\Document\AuthCode;
 use FOS\OAuthServerBundle\Entity\AuthCodeManager;
 use FOS\OAuthServerBundle\Model\AuthCodeInterface;
@@ -57,7 +56,7 @@ class AuthCodeManagerTest extends TestCase
 
     public function testFindAuthCodeBy(): void
     {
-        $repository = $this->getMockBuilder(ObjectRepository::class)
+        $repository = $this->getMockBuilder(EntityRepository::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
@@ -95,14 +94,12 @@ class AuthCodeManagerTest extends TestCase
             ->expects($this->once())
             ->method('persist')
             ->with($authCode)
-            ->willReturn(null)
         ;
 
         $this->entityManager
             ->expects($this->once())
             ->method('flush')
             ->with()
-            ->willReturn(null)
         ;
 
         $this->instance->updateAuthCode($authCode);
@@ -119,14 +116,12 @@ class AuthCodeManagerTest extends TestCase
             ->expects($this->once())
             ->method('remove')
             ->with($authCode)
-            ->willReturn(null)
         ;
 
         $this->entityManager
             ->expects($this->once())
             ->method('flush')
             ->with()
-            ->willReturn(null)
         ;
 
         $this->instance->deleteAuthCode($authCode);
@@ -181,7 +176,7 @@ class AuthCodeManagerTest extends TestCase
             ->willReturn($queryBuilder)
         ;
 
-        $query = $this->getMockBuilder(AbstractQuery::class)
+        $query = $this->getMockBuilder(Query::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;

@@ -42,7 +42,7 @@ class CreateClientCommandTest extends TestCase
         $command = new CreateClientCommand($this->clientManager);
 
         $application = new Application();
-        $application->add($command);
+        $application->addCommand($command);
 
         /** @var CreateClientCommand $command */
         $command = $application->find($command->getName());

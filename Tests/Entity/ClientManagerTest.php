@@ -90,17 +90,15 @@ class ClientManagerTest extends TestCase
             ->expects($this->once())
             ->method('persist')
             ->with($client)
-            ->willReturn(null)
         ;
 
         $this->entityManager
             ->expects($this->once())
             ->method('flush')
             ->with()
-            ->willReturn(null)
         ;
 
-        $this->assertNull($this->instance->updateClient($client));
+        $this->instance->updateClient($client);
     }
 
     public function testDeleteClient(): void
@@ -114,16 +112,14 @@ class ClientManagerTest extends TestCase
             ->expects($this->once())
             ->method('remove')
             ->with($client)
-            ->willReturn(null)
         ;
 
         $this->entityManager
             ->expects($this->once())
             ->method('flush')
             ->with()
-            ->willReturn(null)
         ;
 
-        $this->assertNull($this->instance->deleteClient($client));
+        $this->instance->deleteClient($client);
     }
 }

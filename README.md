@@ -1,7 +1,8 @@
 FOSOAuthServerBundle
 ====================
 [![Tests](https://github.com/klapaudius/FOSOAuthServerBundle/actions/workflows/php.yml/badge.svg?branch=5.1)](https://github.com/klapaudius/FOSOAuthServerBundle/actions/workflows/php.yml)
-
+[![codecov](https://codecov.io/gh/klapaudius/FOSOAuthServerBundle/graph/badge.svg?token=UK39PJLNTB)](https://codecov.io/gh/klapaudius/FOSOAuthServerBundle)
+![Packagist Downloads](https://img.shields.io/packagist/dt/klapaudius/oauth-server-bundle)
 
 ## Documentation
  
@@ -12,7 +13,10 @@ The bulk of the documentation is stored in the `Resources/doc/index.md` file in 
 ## Repository history
 
 This repository has been initialy created to remove the deprecated warnings on Symfony 4.2 since several pull requests were not reviewed on FriendsOfSymfony/FOSOAuthServerBundle.
-It is actively maintained and works on Symfony 5 (branch 3.0), Symfony 6 (branch 4.0) and Symfony 7 (branch 5.0).
+It is actively maintained and works on:
+- Symfony 5 (branch 3.0),
+- Symfony 6 (branch 4.0),
+- Symfony 7/8 (branch 5.X).
 
 Feel free to PR.
 
@@ -25,6 +29,7 @@ This bundle is under the MIT license. See the complete license in the bundle:
 
 ## Credits
 
+- Boris AUBE
 - Arnaud Le Blanc, and [all contributors](https://github.com/klapaudius/FOSOAuthServerBundle/contributors)
 - Inspired by [BazingaOAuthBundle](https://github.com/willdurand/BazingaOAuthServerBundle) and [FOSUserBundle](https://github.com/FriendsOfSymfony/FOSUserBundle)
 - Installation doc adapted from [FOSUserBundle](https://github.com/FriendsOfSymfony/FOSUserBundle) doc.

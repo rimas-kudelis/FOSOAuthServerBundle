@@ -3,7 +3,10 @@ Getting Started With FOSOAuthServerBundle
 
 ## Prerequisites
 
-This version of the bundle requires Symfony 7
+This version of the bundle requires :
+- Symfony 7 on branch 5.0 or 5.1
+- Symfony 6 on branch 4.0
+- Symfony 5 on branch 3.0
 
 #### Translations
 
@@ -32,16 +35,17 @@ Installation is a quick 5 steps process:
 ### Step 1: Install FOSOAuthServerBundle
 
 The preferred way to install this bundle is to rely on [Composer](http://getcomposer.org).
-Just check on [Packagist](http://packagist.org/packages/klapaudius/oauth-server-bundle) the version you want to install (in the following example, we used "dev-master") and add it to your `composer.json`:
+Just check on [Packagist](http://packagist.org/packages/klapaudius/oauth-server-bundle) the version you want to install (in the following example, we used "5.1" for Symfony 7) and add it to your `composer.json`:
 
 ``` js
 {
     "require": {
         // ...
-        "klapaudius/oauth-server-bundle": "dev-master"
+        "klapaudius/oauth-server-bundle": "^5.1"
     }
 }
 ```
+###### N.B. : if you are not sure which version you need, you can just replace "^5.1" by "*" and change at the end of the installation procedure to be more specific using the automatically installed version (e.g. "^4.0" if it was 4.0.6). 
 
 ### Step 2: Create model classes
 
@@ -53,8 +57,8 @@ This bundle needs to persist some classes to a database:
 - `AuthCode`
 
 Your first job, then, is to create these classes for your application.
-These classes can look and act however you want: add any
-properties or methods you find useful.
+These classes can look and act however, feel free to add any
+properties or methods that suit your needs.
 
 These classes have just a few requirements:
 
@@ -90,16 +94,12 @@ namespace App\Entity;
 use FOS\OAuthServerBundle\Entity\Client as BaseClient;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class Client extends BaseClient
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy="AUTO")]
+    #[ORM\Column(type: 'integer')]
     protected $id;
 
     public function __construct()
@@ -174,7 +174,7 @@ class ClientManager implements ClientManagerInterface
 
 ``` php
 <?php
-// src/App/Entity/AccessToken.php
+// src/Entity/AccessToken.php
 
 namespace App\Entity;
 
@@ -183,35 +183,27 @@ use Doctrine\ORM\Mapping as ORM;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class AccessToken extends BaseAccessToken
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    #[ORM\Column(type: 'integer')]
     protected $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Client")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: "Client")]
+    #[ORM\JoinColumn(nullable: false)]
     protected ClientInterface $client;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Your\Own\Entity\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ORM\ManyToOne(targetEntity: 'Your\Own\Entity\User')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: "CASCADE")]
     protected ?UserInterface $user = null;
 }
 ```
 
 ``` php
 <?php
-// src/App/Entity/RefreshToken.php
+// src/Entity/RefreshToken.php
 
 namespace App\Entity;
 
@@ -220,35 +212,27 @@ use Doctrine\ORM\Mapping as ORM;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class RefreshToken extends BaseRefreshToken
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    #[ORM\Column(type: 'integer')]
     protected $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Client")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: "Client")]
+    #[ORM\JoinColumn(nullable: false)]
     protected ClientInterface $client;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Your\Own\Entity\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ORM\ManyToOne(targetEntity: 'Your\Own\Entity\User')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: "CASCADE")]
     protected ?UserInterface $user = null;
 }
 ```
 
 ``` php
 <?php
-// src/App/Entity/AuthCode.php
+// src/Entity/AuthCode.php
 
 namespace App\Entity;
 
@@ -257,28 +241,20 @@ use Doctrine\ORM\Mapping as ORM;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class AuthCode extends BaseAuthCode
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    #[ORM\Column(type: 'integer')]
     protected $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Client")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: "Client")]
+    #[ORM\JoinColumn(nullable: false)]
     protected ClientInterface $client;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Your\Own\Entity\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ORM\ManyToOne(targetEntity: 'Your\Own\Entity\User')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: "CASCADE")]
     protected ?UserInterface $user = null;
 }
 ```
@@ -290,7 +266,7 @@ __Note__: If you don't have `auto_mapping` activated in your doctrine configurat
 ``` php
 <?php
 
-// src/App/Document/Client.php
+// src/Document/Client.php
 
 namespace App\Document;
 
@@ -303,7 +279,7 @@ class Client extends BaseClient
 ```
 
 ``` xml
-<!-- src/App/Resources/config/doctrine/Client.mongodb.xml -->
+<!-- src/Resources/config/doctrine/Client.mongodb.xml -->
 
 <doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -320,7 +296,7 @@ class Client extends BaseClient
 ``` php
 <?php
 
-// src/App/Document/AuthCode.php
+// src/Document/AuthCode.php
 
 namespace App\Document;
 
@@ -357,7 +333,7 @@ class AuthCode extends BaseAuthCode
 ```
 
 ``` xml
-<!-- src/App/Resources/config/doctrine/AuthCode.mongodb.xml -->
+<!-- src/Resources/config/doctrine/AuthCode.mongodb.xml -->
 
 <doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -375,7 +351,7 @@ class AuthCode extends BaseAuthCode
 ``` php
 <?php
 
-// src/App/Document/AccessToken.php
+// src/Document/AccessToken.php
 
 namespace App\Document;
 
@@ -412,7 +388,7 @@ class AccessToken extends BaseAccessToken
 ```
 
 ``` xml
-<!-- src/App/Resources/config/doctrine/AccessToken.mongodb.xml -->
+<!-- src/Resources/config/doctrine/AccessToken.mongodb.xml -->
 
 <doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -430,7 +406,7 @@ class AccessToken extends BaseAccessToken
 ``` php
 <?php
 
-// src/App/Document/RefreshToken.php
+// src/Document/RefreshToken.php
 
 namespace App\Document;
 
@@ -467,7 +443,7 @@ class RefreshToken extends BaseRefreshToken
 ```
 
 ``` xml
-<!-- src/App/Resources/config/doctrine/RefreshToken.mongodb.xml -->
+<!-- src/Resources/config/doctrine/RefreshToken.mongodb.xml -->
 
 <doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -542,8 +518,8 @@ security:
     # also note absence of "access_control" section
 ```
 
-From now on all of your api resources can be accessed without authorization. But what if one or more of them should be
-secured anyway or/and require presence of authenticated user? It's easy! You can do that manually by adding few lines of
+From now on, all of your api resources can be accessed without authorization. But what if one or more of them should be
+secured anyway or/and require the presence of an authenticated user? You can do that manually by adding a few lines of
 code at the beginning of all of your secured actions like in the example below:
 
 ``` php
@@ -565,21 +541,33 @@ class YourApiController extends Controller
 
 ### Step 4: Configure FOSOAuthServerBundle
 
-Add references to the token.xml and the authorize.xml configuration files in config/routes/oauth2.yml:
+Add references to the token.yaml and the authorize.yaml configuration files in config/routes/oauth2.yaml:
 
 ``` yaml
-# config/routes/oauth2.yml
+# config/routes/oauth2.yaml
 fos_oauth_server_token:
-    resource: "@FOSOAuthServerBundle/Resources/config/routing/token.xml"
+    resource: "@FOSOAuthServerBundle/Resources/config/routing/token.yaml"
 
 fos_oauth_server_authorize:
-    resource: "@FOSOAuthServerBundle/Resources/config/routing/authorize.xml"
+    resource: "@FOSOAuthServerBundle/Resources/config/routing/authorize.yaml"
 ```
 
-Add FOSOAuthServerBundle settings in config/packages/fos_auth_server.yml:
+**Note:** XML routing files are deprecated as of version 5.2. While they continue to work for backwards compatibility, you should migrate to YAML:
+
+```yaml
+# Old (deprecated, will trigger warnings):
+resource: "@FOSOAuthServerBundle/Resources/config/routing/token.xml"
+
+# New (recommended):
+resource: "@FOSOAuthServerBundle/Resources/config/routing/token.yaml"
+```
+
+The XML and YAML files define identical routes. Simply change `.xml` to `.yaml` in your routing imports.
+
+Add FOSOAuthServerBundle settings in config/packages/fos_auth_server.yaml:
 
 ``` yaml
-# config/packages/fos_auth_server.yml
+# config/packages/fos_auth_server.yaml
 fos_oauth_server:
     db_driver: orm       # Drivers available: orm or mongodb
     client_class:        App\Entity\Client
@@ -598,7 +586,7 @@ If you're authenticating users, don't forget to set the user provider.
 Here's an example using the FOSUserBundle user provider:
 
 ``` yaml
-# config/packages/fos_auth_server.yml
+# config/packages/fos_auth_server.yaml
 fos_oauth_server:
     ...
 
@@ -686,9 +674,9 @@ return $this->redirect($this->generateUrl('fos_oauth_server_authorize', array(
 
 ## Usage
 
-The `token` endpoint is at `/oauth/v2/token` by default (see `Resources/config/routing/token.xml`).
+The `token` endpoint is at `/oauth/v2/token` by default (see `Resources/config/routing/token.yaml`).
 
-The `authorize` endpoint is at `/oauth/v2/auth` by default (see `Resources/config/routing/authorize.xml`).
+The `authorize` endpoint is at `/oauth/v2/auth` by default (see `Resources/config/routing/authorize.yaml`).
 
 
 ## Next steps

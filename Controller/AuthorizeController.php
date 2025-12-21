@@ -42,7 +42,7 @@ use Twig\Error\SyntaxError;
  */
 class AuthorizeController
 {
-    private ClientInterface $client;
+    private ?ClientInterface $client = null;
 
     /**
      * This controller had been made as a service due to support symfony 4 where all* services are private by default.
@@ -66,7 +66,7 @@ class AuthorizeController
      */
     public function authorizeAction(Request $request, AuthorizeFormHandler $formHandler, Environment $twig): Response
     {
-        $user = $this->tokenStorage->getToken()->getUser();
+        $user = $this->tokenStorage->getToken()?->getUser();
         if (!$user instanceof UserInterface) {
             throw new AccessDeniedException('This user does not have access to this section.');
         }
@@ -146,7 +146,7 @@ class AuthorizeController
 
         if (null === $clientId = $request->get('client_id')) {
             $formData = $request->get($this->authorizeForm->getName(), []);
-            $clientId = isset($formData['client_id']) ? $formData['client_id'] : null;
+            $clientId = $formData['client_id'] ?? null;
         }
 
         $this->client = $this->clientManager->findClientByPublicId($clientId);

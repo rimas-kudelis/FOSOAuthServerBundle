@@ -565,7 +565,6 @@ class OAuthStorageTest extends TestCase
 
         $storageClass = new \ReflectionClass(get_class($this->storage));
         $grantExtensionsProperty = $storageClass->getProperty('grantExtensions');
-        $grantExtensionsProperty->setAccessible(true);
         $grantExtensions = $grantExtensionsProperty->getValue($this->storage);
 
         $this->assertSame($grantExtension2, $grantExtensions[$uri]);

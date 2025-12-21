@@ -374,7 +374,6 @@ class AuthorizeFormHandlerTest extends TestCase
     {
         $reflectionObject = new \ReflectionObject($this->instance);
         $reflectionMethod = $reflectionObject->getMethod($methodName);
-        $reflectionMethod->setAccessible(true);
 
         return $reflectionMethod;
     }
