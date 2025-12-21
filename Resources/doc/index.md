@@ -552,7 +552,7 @@ fos_oauth_server_authorize:
     resource: "@FOSOAuthServerBundle/Resources/config/routing/authorize.yaml"
 ```
 
-**Note:** XML routing files are deprecated as of version 5.1. While they continue to work for backwards compatibility, you should migrate to YAML:
+**Note:** XML routing files are deprecated as of version 5.2. While they continue to work for backwards compatibility, you should migrate to YAML:
 
 ```yaml
 # Old (deprecated, will trigger warnings):
