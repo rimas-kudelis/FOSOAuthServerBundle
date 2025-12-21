@@ -26,9 +26,6 @@ jobs:
         ini-values: memory_limit=-1
         tools: composer:v2
 
-    - name: Verify MongoDB extension
-      run: php -m | grep mongodb
-
     - name: Validate composer.json and composer.lock
       run: composer validate --strict
 
@@ -54,6 +51,7 @@ jobs:
         XDEBUG_MODE: coverage
       with:
         php_version: '8.3'
+        php_extensions: xdebug
         coverage_clover: "coverage.xml"
         args: --log-junit junit.xml
 
