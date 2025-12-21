@@ -40,7 +40,7 @@ class CleanCommandTest extends TestCase
         $command = new CleanCommand($this->accessTokenManager, $this->refreshTokenManager, $this->authCodeManager);
 
         $application = new Application();
-        $application->add($command);
+        $application->addCommand($command);
 
         /** @var CleanCommand $command */
         $command = $application->find($command->getName());
