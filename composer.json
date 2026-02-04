@@ -1,7 +1,7 @@
 {
     "name": "klapaudius/oauth-server-bundle",
     "type": "symfony-bundle",
-    "description": "Symfony(5.x to 7.x) OAuth Server Bundle",
+    "description": "Symfony(5.x to 8.x) OAuth Server Bundle",
     "keywords": ["oauth", "oauth2", "server"],
     "homepage": "https://github.com/klapaudius/FOSOAuthServerBundle",
     "license": "MIT",

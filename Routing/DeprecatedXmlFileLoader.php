@@ -55,6 +55,10 @@ class DeprecatedXmlFileLoader extends YamlFileLoader
 
     public function supports(mixed $resource, ?string $type = null): bool
     {
+        if (! is_string($resource)) {
+            return false;
+        }
+
         $filename = basename($resource);
         $yamlFile = str_replace('.xml', '.yaml', $resource);
 
