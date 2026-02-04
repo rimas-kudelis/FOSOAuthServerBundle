@@ -366,6 +366,125 @@ class AuthorizeFormHandlerTest extends TestCase
     }
 
     /**
+     * Test that onSuccess handles missing optional OAuth2 parameters (state, scope).
+     * Before the fix, this would throw: "Typed property must not be accessed before initialization"
+     * because properties were typed as non-nullable string without default values.
+     *
+     * According to OAuth2 spec, 'state' and 'scope' are optional parameters.
+     */
+    public function testOnSuccessWithMissingOptionalParameters(): void
+    {
+        $method = $this->getReflectionMethod('onSuccess');
+
+        // Create Authorize with only required OAuth2 parameters (state and scope omitted)
+        $formData = new Authorize(
+            true,
+            [
+                'client_id' => 'test_client_id',
+                'response_type' => 'code',
+                'redirect_uri' => 'https://example.com/callback',
+                // 'state' and 'scope' intentionally omitted - they are optional
+            ]
+        );
+
+        $this->form
+            ->expects($this->exactly(5))
+            ->method('getData')
+            ->willReturn($formData)
+        ;
+
+        $_GET = [];
+
+        // This should not throw an error - nullable properties with defaults should handle this
+        $method->invoke($this->instance);
+
+        // Verify that $_GET is populated correctly with null for missing optional parameters
+        $this->assertSame([
+            'client_id' => 'test_client_id',
+            'response_type' => 'code',
+            'redirect_uri' => 'https://example.com/callback',
+            'state' => null,
+            'scope' => null,
+        ], $_GET);
+    }
+
+    /**
+     * Test process() with missing optional parameters in a real-world scenario.
+     * This simulates a POST request where state parameter is not provided.
+     */
+    public function testProcessWithMissingStateParameter(): void
+    {
+        $this->request->request->set('accepted', true);
+        $this->request->setMethod('POST');
+
+        // Only set required OAuth2 parameters, omit 'state'
+        $this->request->query->set('client_id', 'test_client');
+        $this->request->query->set('response_type', 'code');
+        $this->request->query->set('redirect_uri', 'https://example.com/callback');
+        $this->request->query->set('scope', 'read write');
+        // 'state' is intentionally not set - it's optional
+
+        $formData = new Authorize(
+            true,
+            [
+                'client_id' => 'test_client',
+                'response_type' => 'code',
+                'redirect_uri' => 'https://example.com/callback',
+                'scope' => 'read write',
+                // 'state' not in array
+            ]
+        );
+
+        $this->form
+            ->expects($this->once())
+            ->method('setData')
+            ->with($formData)
+            ->willReturn($this->form)
+        ;
+
+        $this->form
+            ->expects($this->once())
+            ->method('handleRequest')
+            ->with($this->request)
+            ->willReturn($this->form)
+        ;
+
+        $this->form
+            ->expects($this->once())
+            ->method('isSubmitted')
+            ->willReturn(true)
+        ;
+
+        $this->form
+            ->expects($this->once())
+            ->method('isValid')
+            ->willReturn(true)
+        ;
+
+        $this->form
+            ->expects($this->exactly(5))
+            ->method('getData')
+            ->willReturn($formData)
+        ;
+
+        $_GET = [];
+
+        // Before the fix, this would throw an Error when onSuccess() tries to access $state
+        $result = $this->instance->process();
+
+        $this->assertTrue($result);
+
+        // Verify $_GET contains null for missing state
+        $this->assertSame([
+            'client_id' => 'test_client',
+            'response_type' => 'code',
+            'redirect_uri' => 'https://example.com/callback',
+            'state' => null,
+            'scope' => 'read write',
+        ], $_GET);
+    }
+
+    /**
      * @param string $methodName
      *
      * @return \ReflectionMethod

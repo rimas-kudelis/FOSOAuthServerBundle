@@ -20,11 +20,11 @@ namespace FOS\OAuthServerBundle\Form\Model;
 class Authorize
 {
     public bool $accepted;
-    public string $client_id;
-    public string $response_type;
-    public string $redirect_uri;
-    public string $state;
-    public string $scope;
+    public ?string $client_id = null;
+    public ?string $response_type = null;
+    public ?string $redirect_uri = null;
+    public ?string $state = null;
+    public ?string $scope = null;
 
     public function __construct(bool $accepted, array $query = [])
     {
