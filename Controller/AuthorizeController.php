@@ -85,7 +85,7 @@ class AuthorizeController
         );
 
         if ($event->isAuthorizedClient()) {
-            $scope = $request->get('scope');
+            $scope = $this->requestLegacyGet($request, 'scope');
 
             return $this->oAuth2Server->finishClientAuthorization(true, $user, $request, $scope);
         }
@@ -144,8 +144,8 @@ class AuthorizeController
 
         $request = $this->getCurrentRequest();
 
-        if (null === $clientId = $request->get('client_id')) {
-            $formData = $request->get($this->authorizeForm->getName(), []);
+        if (null === $clientId = $this->requestLegacyGet($request, 'client_id')) {
+            $formData = $this->requestLegacyGet($request, $this->authorizeForm->getName(), []);
             $clientId = $formData['client_id'] ?? null;
         }
 
@@ -183,5 +183,22 @@ class AuthorizeController
         }
 
         return $request;
+    }
+
+    private function requestLegacyGet(Request $request, string $key, mixed $default = null): mixed
+    {
+        if ($request !== $result = $request->attributes->get($key, $request)) {
+            return $result;
+        }
+
+        if ($request->query->has($key)) {
+            return $request->query->all()[$key];
+        }
+
+        if ($request->request->has($key)) {
+            return $request->request->all()[$key];
+        }
+
+        return $default;
     }
 }
