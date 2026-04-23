@@ -20,6 +20,7 @@ use Doctrine\ORM\QueryBuilder;
 use FOS\OAuthServerBundle\Document\AuthCode;
 use FOS\OAuthServerBundle\Entity\AuthCodeManager;
 use FOS\OAuthServerBundle\Model\AuthCodeInterface;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -49,6 +50,7 @@ class AuthCodeManagerTest extends TestCase
         parent::setUp();
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetClassWillReturnClassName(): void
     {
         $this->assertSame($this->className, $this->instance->getClass());
@@ -85,10 +87,7 @@ class AuthCodeManagerTest extends TestCase
 
     public function testUpdateAuthCode(): void
     {
-        $authCode = $this->getMockBuilder(AuthCodeInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
+        $authCode = $this->createStub(AuthCodeInterface::class);
 
         $this->entityManager
             ->expects($this->once())
@@ -107,10 +106,7 @@ class AuthCodeManagerTest extends TestCase
 
     public function testDeleteAuthCode(): void
     {
-        $authCode = $this->getMockBuilder(AuthCodeInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
+        $authCode = $this->createStub(AuthCodeInterface::class);
 
         $this->entityManager
             ->expects($this->once())

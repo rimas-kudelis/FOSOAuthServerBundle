@@ -24,8 +24,8 @@ class TokenControllerTest extends TestCase
 
     public function testTokenActionReturnsAccessTokenResponse(): void
     {
-        $request = $this->createMock(Request::class);
-        $response = $this->createMock(Response::class);
+        $request = $this->createStub(Request::class);
+        $response = $this->createStub(Response::class);
 
         $this->serverMock
             ->expects($this->once())
@@ -40,8 +40,8 @@ class TokenControllerTest extends TestCase
 
     public function testTokenActionHandlesOAuth2ServerException(): void
     {
-        $request = $this->createMock(Request::class);
-        $exceptionResponse = $this->createMock(Response::class);
+        $request = $this->createStub(Request::class);
+        $exceptionResponse = $this->createStub(Response::class);
         $exception = $this->createMock(OAuth2ServerException::class);
 
         $exception

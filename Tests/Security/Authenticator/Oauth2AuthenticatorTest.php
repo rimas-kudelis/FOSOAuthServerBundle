@@ -8,7 +8,9 @@ use FOS\OAuthServerBundle\Security\Authenticator\Passport\Badge\AccessTokenBadge
 use FOS\OAuthServerBundle\Security\Authenticator\Token\OAuthToken;
 use FOS\OAuthServerBundle\Tests\Functional\TestBundle\Entity\AccessToken;
 use OAuth2\OAuth2;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,6 +22,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPasspor
 /**
  * Test class for Oauth2Authenticator
  */
+#[AllowMockObjectsWithoutExpectations]
 class Oauth2AuthenticatorTest extends TestCase
 {
     protected Oauth2Authenticator $authenticator;
@@ -29,7 +32,7 @@ class Oauth2AuthenticatorTest extends TestCase
 
     protected UserCheckerInterface|MockObject $user;
 
-    protected AccessToken|MockObject $accessToken;
+    protected AccessToken|Stub $accessToken;
 
     protected $userChecker;
 
@@ -45,8 +48,8 @@ class Oauth2AuthenticatorTest extends TestCase
 
         $this->authenticator = new Oauth2Authenticator($this->serverService, $this->userChecker);
 
-        $this->accessToken = $this->createMock( AccessToken::class );
-        $client = $this->createMock( ClientInterface::class );
+        $this->accessToken = $this->createStub( AccessToken::class );
+        $client = $this->createStub( ClientInterface::class );
         $client->method('getUserIdentifier')->willReturn("phpunit");
         $this->accessToken->method('getClient')->willReturn( $client );
     }
@@ -103,7 +106,7 @@ class Oauth2AuthenticatorTest extends TestCase
     {
         $request = new Request();
 
-        $user = $this->createMock( UserInterface::class );
+        $user = $this->createStub( UserInterface::class );
         $user->method('getUserIdentifier')
             ->willReturn("phpunit");
         $user->method('getRoles')
@@ -138,10 +141,10 @@ class Oauth2AuthenticatorTest extends TestCase
     public function testCreateTokenWithValidPassport(): void
     {
         $passport = $this->createMock(SelfValidatingPassport::class);
-        $accessTokenBadge = $this->createMock(AccessTokenBadge::class);
-        $accessToken = $this->createMock(AccessToken::class);
+        $accessTokenBadge = $this->createStub(AccessTokenBadge::class);
+        $accessToken = $this->createStub(AccessToken::class);
 
-        $user = $this->createMock(UserInterface::class);
+        $user = $this->createStub(UserInterface::class);
         $roles = ['ROLE_USER', 'ROLE_TEST'];
         $token = 'some-token';
 
@@ -162,8 +165,8 @@ class Oauth2AuthenticatorTest extends TestCase
     public function testCreateTokenWithoutUser(): void
     {
         $passport = $this->createMock(SelfValidatingPassport::class);
-        $accessTokenBadge = $this->createMock(AccessTokenBadge::class);
-        $accessToken = $this->createMock(AccessToken::class);
+        $accessTokenBadge = $this->createStub(AccessTokenBadge::class);
+        $accessToken = $this->createStub(AccessToken::class);
 
         $roles = ['ROLE_USER'];
         $token = 'some-token';

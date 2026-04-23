@@ -18,6 +18,7 @@ use Doctrine\ORM\EntityRepository;
 use FOS\OAuthServerBundle\Document\Client;
 use FOS\OAuthServerBundle\Entity\ClientManager;
 use FOS\OAuthServerBundle\Model\ClientInterface;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -41,8 +42,7 @@ class ClientManagerTest extends TestCase
         ;
         $this->repository = $this->getMockBuilder(EntityRepository::class)
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
         $this->className = 'RandomClassName'.\random_bytes(5);
 
         $this->entityManager
@@ -57,6 +57,7 @@ class ClientManagerTest extends TestCase
         parent::setUp();
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetClass(): void
     {
         $this->assertSame($this->className, $this->instance->getClass());
@@ -79,12 +80,10 @@ class ClientManagerTest extends TestCase
         $this->assertSame($randomResult, $this->instance->findClientBy($criteria));
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testUpdateClient(): void
     {
-        $client = $this->getMockBuilder(ClientInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
+        $client = $this->createStub(ClientInterface::class);
 
         $this->entityManager
             ->expects($this->once())
@@ -101,12 +100,10 @@ class ClientManagerTest extends TestCase
         $this->instance->updateClient($client);
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testDeleteClient(): void
     {
-        $client = $this->getMockBuilder(ClientInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
+        $client = $this->createStub(ClientInterface::class);
 
         $this->entityManager
             ->expects($this->once())

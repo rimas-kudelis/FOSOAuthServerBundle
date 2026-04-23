@@ -12,7 +12,7 @@ class AccessTokenBadgeTest extends TestCase
 {
     public function testIsResolvedReturnsTrueWhenRolesAreNotEmpty(): void
     {
-        $accessToken = $this->createMock(AccessToken::class);
+        $accessToken = $this->createStub(AccessToken::class);
         $roles = ['ROLE_USER'];
 
         $badge = new AccessTokenBadge($accessToken, $roles);
@@ -22,7 +22,7 @@ class AccessTokenBadgeTest extends TestCase
 
     public function testIsResolvedReturnsFalseWhenRolesAreEmpty(): void
     {
-        $accessToken = $this->createMock(AccessToken::class);
+        $accessToken = $this->createStub(AccessToken::class);
         $roles = [];
 
         $badge = new AccessTokenBadge($accessToken, $roles);
@@ -32,7 +32,7 @@ class AccessTokenBadgeTest extends TestCase
 
     public function testGetAccessToken(): void
     {
-        $accessToken = $this->createMock(AccessToken::class);
+        $accessToken = $this->createStub(AccessToken::class);
         $roles = [];
 
         $badge = new AccessTokenBadge($accessToken, $roles);

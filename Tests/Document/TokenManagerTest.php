@@ -23,6 +23,7 @@ use FOS\OAuthServerBundle\Document\TokenManager;
 use FOS\OAuthServerBundle\Model\Token;
 use MongoDB\Collection;
 use MongoDB\DeleteResult;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -49,8 +50,7 @@ class TokenManagerTest extends TestCase
         $this->className = AccessToken::class;
         $this->repository = $this->getMockBuilder(DocumentRepository::class)
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
         $this->documentManager = $this->getMockBuilder(DocumentManager::class)
             ->disableOriginalConstructor()
             ->getMock()
@@ -83,12 +83,10 @@ class TokenManagerTest extends TestCase
         $this->assertSame($randomResult, $this->instance->findTokenByToken($randomToken));
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testUpdateTokenPersistsAndFlushes(): void
     {
-        $token = $this->getMockBuilder(AccessToken::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
+        $token = $this->createStub(AccessToken::class);
 
         $this->documentManager
             ->expects($this->once())
@@ -105,17 +103,16 @@ class TokenManagerTest extends TestCase
         $this->instance->updateToken($token);
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetClass(): void
     {
         $this->assertSame($this->className, $this->instance->getClass());
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testDeleteToken(): void
     {
-        $token = $this->getMockBuilder(AccessToken::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
+        $token = $this->createStub(AccessToken::class);
 
         $this->documentManager
             ->expects($this->once())
@@ -142,7 +139,6 @@ class TokenManagerTest extends TestCase
         $this->repository
             ->expects($this->once())
             ->method('createQueryBuilder')
-            ->with()
             ->willReturn($queryBuilder)
         ;
 
@@ -186,7 +182,7 @@ class TokenManagerTest extends TestCase
 
         $query = new Query(
             $this->documentManager,
-            $this->createMock(ClassMetadata::class),
+            $this->createStub(ClassMetadata::class),
             $collection,
             [
                 'type' => Query::TYPE_REMOVE,

@@ -110,10 +110,7 @@ class GrantExtensionsCompilerPassTest extends \PHPUnit\Framework\TestCase
             ->getMock()
         ;
 
-        $storageInstance = $this->getMockBuilder(GrantExtensionDispatcherInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
+        $storageInstance = $this->createStub(GrantExtensionDispatcherInterface::class);
 
         $className = 'stdClassUnresolved'.random_bytes(5);
         $resolvedClassName = get_class($storageInstance);
@@ -219,10 +216,7 @@ class GrantExtensionsCompilerPassTest extends \PHPUnit\Framework\TestCase
             ->getMock()
         ;
 
-        $storageInstance = $this->getMockBuilder(GrantExtensionDispatcherInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
+        $storageInstance = $this->createStub(GrantExtensionDispatcherInterface::class);
 
         $className = 'stdClassUnresolved'.random_bytes(5);
         $resolvedClassName = get_class($storageInstance);

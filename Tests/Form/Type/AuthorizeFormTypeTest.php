@@ -16,12 +16,14 @@ namespace FOS\OAuthServerBundle\Tests\Form\Type;
 use FOS\OAuthServerBundle\Form\Model\Authorize;
 use FOS\OAuthServerBundle\Form\Type\AuthorizeFormType;
 use FOS\OAuthServerBundle\Util\LegacyFormHelper;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+#[AllowMockObjectsWithoutExpectations]
 class AuthorizeFormTypeTest extends TypeTestCase
 {
     protected AuthorizeFormType $instance;

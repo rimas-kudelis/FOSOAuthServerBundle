@@ -15,12 +15,14 @@ namespace FOS\OAuthServerBundle\Tests\Command;
 
 use FOS\OAuthServerBundle\Command\CreateClientCommand;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
+#[AllowMockObjectsWithoutExpectations]
 class CreateClientCommandTest extends TestCase
 {
     /**

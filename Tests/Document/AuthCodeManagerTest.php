@@ -22,8 +22,8 @@ use FOS\OAuthServerBundle\Document\AuthCode;
 use FOS\OAuthServerBundle\Document\AuthCodeManager;
 use FOS\OAuthServerBundle\Model\AuthCodeInterface;
 use MongoDB\Collection;
-use MongoDB\Driver\WriteResult;
 use MongoDB\DeleteResult;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -52,8 +52,7 @@ class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
         ;
         $this->repository = $this->getMockBuilder(DocumentRepository::class)
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
         $this->className = 'TestClassName'.\random_bytes(5);
 
         $this->documentManager
@@ -68,6 +67,7 @@ class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
         parent::setUp();
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetClassWillReturnClassName(): void
     {
         $this->assertSame($this->className, $this->instance->getClass());
@@ -90,12 +90,10 @@ class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($randomResult, $this->instance->findAuthCodeBy($criteria));
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testUpdateAuthCode(): void
     {
-        $authCode = $this->getMockBuilder(AuthCodeInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
+        $authCode = $this->createStub(AuthCodeInterface::class);
 
         $this->documentManager
             ->expects($this->once())
@@ -112,12 +110,10 @@ class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
         $this->instance->updateAuthCode($authCode);
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testDeleteAuthCode(): void
     {
-        $authCode = $this->getMockBuilder(AuthCodeInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
+        $authCode = $this->createStub(AuthCodeInterface::class);
 
         $this->documentManager
             ->expects($this->once())
@@ -144,7 +140,6 @@ class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
         $this->repository
             ->expects($this->once())
             ->method('createQueryBuilder')
-            ->with()
             ->willReturn($queryBuilder)
         ;
 
@@ -187,7 +182,7 @@ class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
 
         $query = new Query(
             $this->documentManager,
-            $this->createMock(ClassMetadata::class),
+            $this->createStub(ClassMetadata::class),
             $collection,
             [
                 'type' => Query::TYPE_REMOVE,
@@ -209,12 +204,11 @@ class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($data['n'], $this->instance->deleteExpired());
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testCreateClient()
     {
-        $dm = $this->getMockBuilder(DocumentManager::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $clientManager = new AuthCodeManager($dm, AuthCode::class);;
+        $dm = $this->createStub(DocumentManager::class);
+        $clientManager = new AuthCodeManager($dm, AuthCode::class);
 
         $this->assertInstanceOf(AuthCode::class, $clientManager->createAuthCode());
     }

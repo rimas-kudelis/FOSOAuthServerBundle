@@ -22,6 +22,7 @@ use FOS\OAuthServerBundle\Entity\AccessToken;
 use FOS\OAuthServerBundle\Entity\TokenManager;
 use FOS\OAuthServerBundle\Model\Token;
 use FOS\OAuthServerBundle\Model\TokenInterface;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -44,8 +45,7 @@ class TokenManagerTest extends TestCase
         $this->className = AccessToken::class;
         $this->repository = $this->getMockBuilder(EntityRepository::class)
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
         $this->entityManager = $this->getMockBuilder(EntityManager::class)
             ->disableOriginalConstructor()
             ->getMock()
@@ -61,6 +61,7 @@ class TokenManagerTest extends TestCase
         $this->instance = new TokenManager($this->entityManager, $this->className);
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testUpdateTokenPersistsAndFlushes(): void
     {
         $token = new AccessToken();
@@ -80,6 +81,7 @@ class TokenManagerTest extends TestCase
         $this->instance->updateToken($token);
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetClass(): void
     {
         $this->assertSame($this->className, $this->instance->getClass());
@@ -103,12 +105,10 @@ class TokenManagerTest extends TestCase
         $this->assertSame($randomResult, $this->instance->findTokenBy($criteria));
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testUpdateToken(): void
     {
-        $token = $this->getMockBuilder(TokenInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
+        $token = $this->createStub(TokenInterface::class);
 
         $this->entityManager
             ->expects($this->once())
@@ -125,12 +125,10 @@ class TokenManagerTest extends TestCase
         $this->instance->updateToken($token);
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testDeleteToken(): void
     {
-        $token = $this->getMockBuilder(TokenInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
+        $token = $this->createStub(TokenInterface::class);
 
         $this->entityManager
             ->expects($this->once())

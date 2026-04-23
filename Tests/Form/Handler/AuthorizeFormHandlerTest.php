@@ -15,6 +15,7 @@ namespace FOS\OAuthServerBundle\Tests\Form\Handler;
 
 use FOS\OAuthServerBundle\Form\Handler\AuthorizeFormHandler;
 use FOS\OAuthServerBundle\Form\Model\Authorize;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -28,6 +29,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
  *
  * @author Nikola Petkanski <nikola@petkanski.com>
  */
+#[AllowMockObjectsWithoutExpectations]
 class AuthorizeFormHandlerTest extends TestCase
 {
     protected FormInterface|MockObject $form;

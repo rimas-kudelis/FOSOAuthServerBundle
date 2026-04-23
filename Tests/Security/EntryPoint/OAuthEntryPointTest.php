@@ -21,8 +21,8 @@ class OAuthEntryPointTest extends TestCase
             ->willReturn('example-realm');
 
         $entryPoint = new OAuthEntryPoint($mockOAuth2);
-        $request = $this->createMock(Request::class);
-        $authException = $this->createMock(AuthenticationException::class);
+        $request = $this->createStub(Request::class);
+        $authException = $this->createStub(AuthenticationException::class);
 
         $response = $entryPoint->start($request, $authException);
 

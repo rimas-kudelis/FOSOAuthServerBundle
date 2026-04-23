@@ -18,6 +18,7 @@ use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use FOS\OAuthServerBundle\Document\Client;
 use FOS\OAuthServerBundle\Document\ClientManager;
 use FOS\OAuthServerBundle\Model\ClientInterface;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -58,6 +59,7 @@ class ClientManagerTest extends TestCase
         parent::setUp();
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetClass(): void
     {
         $this->assertSame($this->className, $this->instance->getClass());
@@ -79,11 +81,10 @@ class ClientManagerTest extends TestCase
         $this->assertSame($randomResult, $this->instance->findClientBy($criteria));
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testUpdateClient(): void
     {
-        $client = $this->getMockBuilder(ClientInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createStub(ClientInterface::class);
 
         $this->documentManager
             ->expects($this->once())
@@ -98,11 +99,10 @@ class ClientManagerTest extends TestCase
         $this->instance->updateClient($client);
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testDeleteClient(): void
     {
-        $client = $this->getMockBuilder(ClientInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createStub(ClientInterface::class);
 
         $this->documentManager
             ->expects($this->once())
@@ -117,12 +117,11 @@ class ClientManagerTest extends TestCase
         $this->instance->deleteClient($client);
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testCreateClient()
     {
-        $dm = $this->getMockBuilder(DocumentManager::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $clientManager = new ClientManager($dm, Client::class);;
+        $dm = $this->createStub(DocumentManager::class);
+        $clientManager = new ClientManager($dm, Client::class);
 
         $this->assertInstanceOf(Client::class, $clientManager->createClient());
     }

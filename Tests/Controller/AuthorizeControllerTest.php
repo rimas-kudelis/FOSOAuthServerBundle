@@ -20,8 +20,10 @@ use FOS\OAuthServerBundle\Model\ClientInterface;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use OAuth2\OAuth2;
 use OAuth2\OAuth2RedirectException;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
 use ReflectionProperty;
@@ -42,6 +44,7 @@ use Twig\Environment;
 use function random_bytes;
 
 #[Small]
+#[AllowMockObjectsWithoutExpectations]
 class AuthorizeControllerTest extends TestCase
 {
     protected RequestStack|MockObject $requestStack;
@@ -51,17 +54,17 @@ class AuthorizeControllerTest extends TestCase
     protected OAuth2|MockObject $oAuth2Server;
     protected Environment|MockObject $twig;
     protected TokenStorageInterface|MockObject $tokenStorage;
-    protected UrlGeneratorInterface|MockObject $router;
+    protected UrlGeneratorInterface|Stub $router;
     protected ClientManagerInterface|MockObject $clientManager;
     protected EventDispatcherInterface|MockObject $eventDispatcher;
     protected AuthorizeController $instance;
     protected Request $request;
     protected ParameterBag|MockObject $requestQuery;
     protected ParameterBag|MockObject $requestRequest;
-    protected UserInterface|MockObject $user;
-    protected ClientInterface|MockObject $client;
+    protected UserInterface|Stub $user;
+    protected ClientInterface|Stub $client;
     protected OAuthEvent|MockObject $event;
-    protected FormView|MockObject $formView;
+    protected FormView|Stub $formView;
 
     public function setUp(): void
     {
@@ -83,9 +86,7 @@ class AuthorizeControllerTest extends TestCase
         $this->tokenStorage = $this->getMockBuilder(TokenStorageInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->router = $this->getMockBuilder(UrlGeneratorInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->router = $this->createStub(UrlGeneratorInterface::class);
         $this->clientManager = $this->getMockBuilder(ClientManagerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -107,18 +108,12 @@ class AuthorizeControllerTest extends TestCase
         );
 
         $this->request = new Request();
-        $this->user = $this->getMockBuilder(UserInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->client = $this->getMockBuilder(ClientInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->user = $this->createStub(UserInterface::class);
+        $this->client = $this->createStub(ClientInterface::class);
         $this->event = $this->getMockBuilder(OAuthEvent::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->formView = $this->getMockBuilder(FormView::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->formView = $this->createStub(FormView::class);
 
         parent::setUp();
     }

@@ -15,8 +15,8 @@ class OAuthEventTest extends TestCase
     public function testGetUserReturnsCorrectUserInstance(): void
     {
         // Arrange
-        $userMock = $this->createMock(UserInterface::class);
-        $clientMock = $this->createMock(ClientInterface::class);
+        $userMock = $this->createStub(UserInterface::class);
+        $clientMock = $this->createStub(ClientInterface::class);
         $event = new OAuthEvent($userMock, $clientMock);
 
         // Act
@@ -32,8 +32,8 @@ class OAuthEventTest extends TestCase
     public function testSetAuthorizedClientUpdatesToTrue(): void
     {
         // Arrange
-        $userMock = $this->createMock(UserInterface::class);
-        $clientMock = $this->createMock(ClientInterface::class);
+        $userMock = $this->createStub(UserInterface::class);
+        $clientMock = $this->createStub(ClientInterface::class);
         $event = new OAuthEvent($userMock, $clientMock);
 
         // Act
@@ -49,8 +49,8 @@ class OAuthEventTest extends TestCase
     public function testSetAuthorizedClientUpdatesToFalse(): void
     {
         // Arrange
-        $userMock = $this->createMock(UserInterface::class);
-        $clientMock = $this->createMock(ClientInterface::class);
+        $userMock = $this->createStub(UserInterface::class);
+        $clientMock = $this->createStub(ClientInterface::class);
         $event = new OAuthEvent($userMock, $clientMock);
 
         // Act
@@ -66,8 +66,8 @@ class OAuthEventTest extends TestCase
     public function testGetClientReturnsCorrectClientInstance(): void
     {
         // Arrange
-        $userMock = $this->createMock(UserInterface::class);
-        $clientMock = $this->createMock(ClientInterface::class);
+        $userMock = $this->createStub(UserInterface::class);
+        $clientMock = $this->createStub(ClientInterface::class);
         $event = new OAuthEvent($userMock, $clientMock);
 
         // Act

@@ -72,10 +72,7 @@ class OAuthFactoryTest extends TestCase
 
     public function testAddConfigurationDoesNothing(): void
     {
-        $nodeDefinition = $this->getMockBuilder(NodeDefinition::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
+        $nodeDefinition = $this->createStub(NodeDefinition::class);
         $this->assertNull($this->instance->addConfiguration($nodeDefinition));
     }
 
