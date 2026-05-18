@@ -18,6 +18,7 @@ services:
         arguments:
             - "@fos_oauth_server.storage"
             - "%fos_oauth_server.server.options%"
+            - "@event_dispatcher"
 
     FOS\OAuthServerBundle\Controller\TokenController:
         class: "FOS\\OAuthServerBundle\\Controller\\TokenController"
