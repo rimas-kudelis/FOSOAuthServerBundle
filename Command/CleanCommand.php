@@ -15,10 +15,19 @@ namespace FOS\OAuthServerBundle\Command;
 
 use FOS\OAuthServerBundle\Model\AuthCodeManagerInterface;
 use FOS\OAuthServerBundle\Model\TokenManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(
+    name: 'fos:oauth-server:clean',
+    description: 'Clean expired tokens',
+    help: <<<EOT
+  The <info>%command.name%</info> command will remove expired OAuth2 tokens.
+
+  <info>php %command.full_name%</info>
+EOT )]
 class CleanCommand extends Command
 {
     private TokenManagerInterface $accessTokenManager;
@@ -35,26 +44,6 @@ class CleanCommand extends Command
         $this->accessTokenManager = $accessTokenManager;
         $this->refreshTokenManager = $refreshTokenManager;
         $this->authCodeManager = $authCodeManager;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure(): void
-    {
-        parent::configure();
-
-        $this
-            ->setName('fos:oauth-server:clean')
-            ->setDescription('Clean expired tokens')
-            ->setHelp(
-                <<<EOT
-The <info>%command.name%</info> command will remove expired OAuth2 tokens.
-
-  <info>php %command.full_name%</info>
-EOT
-            )
-        ;
     }
 
     /**

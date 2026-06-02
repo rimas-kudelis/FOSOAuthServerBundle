@@ -14,12 +14,23 @@ declare(strict_types=1);
 namespace FOS\OAuthServerBundle\Command;
 
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'fos:oauth-server:create-client',
+    description: 'Creates a new client',
+    help: <<<EOT
+  The <info>%command.name%</info> command creates a new client.
+
+  <info>php %command.full_name% [--redirect-uri=...] [--grant-type=...]</info>
+
+EOT,
+)]
 class CreateClientCommand extends Command
 {
     /**
@@ -42,8 +53,6 @@ class CreateClientCommand extends Command
         parent::configure();
 
         $this
-            ->setName('fos:oauth-server:create-client')
-            ->setDescription('Creates a new client')
             ->addOption(
                 'redirect-uri',
                 null,
@@ -57,14 +66,6 @@ class CreateClientCommand extends Command
                 InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
                 'Sets allowed grant type for client. Use this option multiple times to set multiple grant types..',
                 null
-            )
-            ->setHelp(
-                <<<EOT
-The <info>%command.name%</info> command creates a new client.
-
-<info>php %command.full_name% [--redirect-uri=...] [--grant-type=...]</info>
-
-EOT
             )
         ;
     }
